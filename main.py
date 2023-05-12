@@ -111,20 +111,12 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
 
     client_timezone = "America/Chihuahua"
 
-    if option == "Monthly":
-        start_ = "2023-05-01"
-        end_ = "2023-05-31"
+    if option == "Custom":
         today = datetime.datetime.now(timezone(client_timezone))
         date_from_offset = datetime.datetime.fromisoformat(start_).astimezone(
             timezone(client_timezone)) - datetime.timedelta(days=2)
         date_from = date_from_offset.strftime("%Y-%m-%d")
-        date_to = end_
-    elif option == "Received":
-        today = datetime.datetime.now(timezone(client_timezone)) - datetime.timedelta(days=offset_back)
-        search_from = today.replace(hour=0, minute=0, second=0, microsecond=0) - datetime.timedelta(days=5)
-        search_to = today.replace(hour=23, minute=59, second=59, microsecond=999999) + datetime.timedelta(days=6)
-        date_from = search_from.strftime("%Y-%m-%d")
-        date_to = search_to.strftime("%Y-%m-%d")        
+        date_to = end_   
     else:
         today = datetime.datetime.now(timezone(client_timezone)) - datetime.timedelta(days=offset_back)
         search_from = today.replace(hour=0, minute=0, second=0, microsecond=0) - datetime.timedelta(days=3)
@@ -226,16 +218,14 @@ st.caption(f"For now use Yesterday option for tracking NDD orders.")
 if st.sidebar.button("Refresh data", type="primary"):
     st.experimental_memo.clear()
 st.sidebar.caption(f"Page reload doesn't refresh the data.\nInstead, use this button to get a fresh report")
-
-option = st.sidebar.selectbox(
-    "Select report date:",
-    ["Today", "Yesterday", "Tomorrow", "Monthly", "Received"]
-)
+from_date = st.sidebar.date_input("From", datetime.date(2023, 5, 1))
+to_date = st.sidebar.date_input("To", datetime.date(2023, 5, 31))
+option = "Custom"
 
 
 @st.experimental_memo
 def get_cached_report(option):
-    report = get_report(option)
+    report = get_report(option, start_=from_date, end_=to_date)
     return report
 
 
@@ -267,19 +257,13 @@ couriers = st.sidebar.multiselect(
     df["courier_name"].unique()
 )
 
-only_no_proofs = st.sidebar.checkbox("Only parcels without proofs")
-
-if only_no_proofs:
-    df = df[df["proof"] == "No proof"]
-
 without_cancelled = st.sidebar.checkbox("Without cancels")
 
 if without_cancelled:
     df = df[~df["status"].isin(["cancelled", "performer_not_found", "failed", "cancelled_by_taxi"])]
 
-if option != "Received":
-    col1, col2, col3 = st.columns(3)
-    col1.metric(f"Delivered {option.lower()} :package:", delivered_today)
+col1, col2, col3 = st.columns(3)
+col1.metric(f"Delivered} :package:", delivered_today)
 
 if not statuses or statuses == []:
     filtered_frame = df
@@ -288,9 +272,6 @@ else:
 
 if couriers:
     filtered_frame = df[df['courier_name'].isin(couriers)]
-
-if option == "Received":
-    filtered_frame = filtered_frame[filtered_frame['status'].isin(["performer_lookup"])]
     
 st.dataframe(filtered_frame)
 
