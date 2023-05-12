@@ -244,7 +244,7 @@ couriers = st.sidebar.multiselect(
 without_cancelled = st.sidebar.checkbox("Without cancels")
 
 if without_cancelled:
-    df = df[~df["status"].isin(["cancelled", "performer_not_found", "failed", "cancelled_by_taxi"])]
+    df = df[~df["status"].isin(["cancelled", "performer_not_found", "failed", "cancelled_by_taxi", "cancelled_with_payment"])]
 
 col1, col2, col3 = st.columns(3)
 col1.metric(f"Delivered :package:", delivered_today)
