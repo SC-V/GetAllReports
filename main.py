@@ -122,7 +122,7 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
     for secret in CLAIM_SECRETS:
         claims, cursor = get_claims(secret, date_from, date_to)
         while cursor:
-            new_page_claims, cursor = get_claims(date_from, date_to, cursor)
+            new_page_claims, cursor = get_claims(secret, date_from, date_to, cursor)
             claims = claims + new_page_claims
         for claim in claims:
             try:
