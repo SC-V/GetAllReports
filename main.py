@@ -107,7 +107,7 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
         end_ = str(end_)
         today = datetime.datetime.now(timezone(client_timezone))
         date_from_offset = datetime.datetime.fromisoformat(start_).astimezone(
-            timezone(client_timezone)) - datetime.timedelta(days=2)
+            timezone(client_timezone)) # - datetime.timedelta(days=2)
         date_from = date_from_offset.strftime("%Y-%m-%d")
         date_to = end_   
     else:
