@@ -202,7 +202,7 @@ st.markdown(f"# Ship from client custom report")
 if st.sidebar.button("Refresh data", type="primary"):
     st.experimental_memo.clear()
 st.sidebar.caption(f"Page reload doesn't refresh the data.\nInstead, use this button to get a fresh report")
-from_date = st.sidebar.date_input("From", datetime.date(2023, 5, 1))
+from_date = st.sidebar.date_input("From", datetime.date(2023, 5, 1), help="Actual search date would be -2 days from selected dates to deal with orders created in advance for tomorrow/ after tomorrow")
 to_date = st.sidebar.date_input("To", datetime.date(2023, 5, 31))
 option = "Custom"
 
