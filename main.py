@@ -3,7 +3,6 @@ import requests
 import json
 import pandas
 from pytz import timezone
-from googleapiclient import discovery
 import io
 import streamlit as st
 import haversine as hs
