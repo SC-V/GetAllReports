@@ -197,8 +197,7 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
     return result_frame
 
 
-st.markdown(f"# Warehouse routes report")
-st.caption(f"For now use Yesterday option for tracking NDD orders.")
+st.markdown(f"# Ship from client custom report")
 
 if st.sidebar.button("Refresh data", type="primary"):
     st.experimental_memo.clear()
