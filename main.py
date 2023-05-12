@@ -195,7 +195,6 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
     return result_frame
 
 
-streamlit_analytics.start_tracking()
 st.markdown(f"# Warehouse routes report")
 st.caption(f"For now use Yesterday option for tracking NDD orders.")
 
@@ -279,5 +278,3 @@ with pandas.ExcelWriter(FILE_BUFFER, engine='xlsxwriter') as writer:
         file_name=f"route_report_{TODAY}.xlsx",
         mime="application/vnd.ms-excel"
     )
-    
-streamlit_analytics.stop_tracking()
