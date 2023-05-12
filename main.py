@@ -6,7 +6,6 @@ from pytz import timezone
 import io
 import streamlit as st
 import pydeck as pdk
-import streamlit_analytics
 import dateutil.parser
 
 st.set_page_config(layout="wide")
