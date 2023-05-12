@@ -263,7 +263,7 @@ if without_cancelled:
     df = df[~df["status"].isin(["cancelled", "performer_not_found", "failed", "cancelled_by_taxi"])]
 
 col1, col2, col3 = st.columns(3)
-col1.metric(f"Delivered} :package:", delivered_today)
+col1.metric(f"Delivered :package:", delivered_today)
 
 if not statuses or statuses == []:
     filtered_frame = df
